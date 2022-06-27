@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.bean.VersionBean;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,16 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class HelloWorld {
+public class AppService {
+    @GetMapping("/get_version")
+    public String getVersion() {
+        JSONObject object = new JSONObject();
+        VersionBean versionBean = new VersionBean(App.VERSION);
+        object.put("version", "1.0");
+        return generateJson(object, "200", "成功", "");
+    }
+
+
     /**
      * http://localhost:8081/api/hello
      *
@@ -55,6 +65,7 @@ public class HelloWorld {
     /**
      * http://localhost:8081/api/url1?id=1
      * http://localhost:8081/api/url2?id=2
+     * 上面两个请求都走这个方法
      */
     @GetMapping({"/url1", "url2"})
     public String multiUrl(@RequestParam Integer id) {
@@ -81,6 +92,12 @@ public class HelloWorld {
         return generateJson(object, "200", "成功", "");
     }
 
+    /**
+     * http://10.133.46.17:8081/api/hello_post_new
+     *
+     * @param request
+     * @return
+     */
     @PostMapping("/hello_post_new")
     public String hello(HttpServletRequest request) {
         ServletInputStream is = null;
@@ -114,10 +131,10 @@ public class HelloWorld {
 
     private String generateJson(JSONObject object, String resultCode, String resultMsg, String traceNo) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("resultCode", resultCode);
-        jsonObject.put("resultMsg", resultMsg);
-        jsonObject.put("traceNo", traceNo);
-        jsonObject.put("msg", object);
+        jsonObject.put("resultCode", resultCode);//错误码
+        jsonObject.put("resultMsg", resultMsg);//结果消息
+        jsonObject.put("traceNo", traceNo);//traceNumber
+        jsonObject.put("msg", object);//数据实体
         return jsonObject.toString();
     }
 
