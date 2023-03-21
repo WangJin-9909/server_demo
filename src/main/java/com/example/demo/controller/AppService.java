@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.bean.VersionBean;
+import com.example.demo.utils.Logger;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.web.bind.annotation.*;
@@ -88,6 +89,7 @@ public class AppService {
 
     @PostMapping("/hello_post")
     public String hello(@RequestBody Map params) {
+        Logger.d("TEST", "来请求了");
         JSONObject object = new JSONObject();
         return generateJson(object, "200", "成功", "");
     }
